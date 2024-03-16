@@ -17,5 +17,5 @@
 - HTML引入
 ```html
 <link rel="stylesheet" href="./dynlantrd.min.css">
-</script><script type="text/javascript" src="./dynlantrd.min.js"></script>
+<script type="text/javascript" src="./dynlantrd.min.js"></script>
 ```
