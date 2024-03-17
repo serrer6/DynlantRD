@@ -4,6 +4,7 @@
 ![Webpack](https://img.shields.io/badge/WEBPACK-8DD6F9?style=for-the-badge&logo=webpack&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![MiaoDB](https://img.shields.io/badge/MiaoDB--Project_OpenSource-2B2F64?style=for-the-badge&)
 - 大体上很仿B站，因为其本身的诞生源于个人项目需要。
 > 写着玩，一种消遣。如果不更新/长期不动弹是正常现象。如果我有精力和时间，我后续会把它变得正式一点
 ---------
