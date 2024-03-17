@@ -1,5 +1,5 @@
 # DynlantRD 轻量级前端"动态/帖子"渲染器
-![GPL](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)
+![GPL](https://img.shields.io/badge/License-GPLv2-blue?style=for-the-badge)
 ![Nodejs](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white)
 ![Webpack](https://img.shields.io/badge/WEBPACK-8DD6F9?style=for-the-badge&logo=webpack&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
