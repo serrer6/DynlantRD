@@ -1,3 +1,3 @@
-import DynlantRD from './dynlantrd'
+// entry file
 
-export default DynlantRD 
+module.exports = require('./dynlantrd.js');
