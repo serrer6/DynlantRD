@@ -7,9 +7,6 @@ module.exports ={
     output: {
 	filename: "[name].uncompress.js",
 	path: path.resolve(__dirname,"dist"),
-	library: {
-	    name: 'DynlantRD',
-	    type: 'umd',
-	},
+	libraryTarget: "umd",
     },
 };

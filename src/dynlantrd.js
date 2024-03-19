@@ -20,5 +20,6 @@ export default class DynlantRD {
  * @return {Undefined} 无返回值
  */
 DynlantRD.prototyp.RenderJSON = function(richtext){
-  var richtext_obj = JSON.parse(richtext);
+	console.log("EEE");
+	var richtext_obj = JSON.parse(richtext);
 }
