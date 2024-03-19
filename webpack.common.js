@@ -9,6 +9,5 @@ module.exports ={
 	path: path.resolve(__dirname,"dist"),
 	library: 'dynlantrd',
 	libraryTarget: "umd",
-	libraryExport: 'default',
   },
 };

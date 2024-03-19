@@ -1,3 +1,3 @@
 // entry file
 
-module.exports = require('./dynlantrd.js');
+module.exports = require('./dynlantrd.js').default;
