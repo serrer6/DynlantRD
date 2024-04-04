@@ -13,14 +13,14 @@
   <p align="center">
     适用于网站帖子的富文本渲染器
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>浏览文档 »</strong></a>
+    <a href="https://github.com/serrer6/DynlantRD"><strong>浏览文档[暂无] »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">查看 Demo</a>
+    <a href="https://github.com/serrer6/DynlantRD">查看 Demo[无]</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">反馈 Bug</a>
+    <a href="https://github.com/serrer6/DynlantRD/issues">反馈 Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">请求新功能</a>
+    <a href="https://github.com/serrer6/DynlantRD/issues">请求新功能</a>
   </p>
 </div>
 
