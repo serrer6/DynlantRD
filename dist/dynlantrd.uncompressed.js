@@ -11,7 +11,7 @@
 return /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 678:
+/***/ 385:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -22,13 +22,13 @@ __webpack_require__.d(__webpack_exports__, {
 });
 
 ;// CONCATENATED MODULE: ./src/utils/logger.js
-class Logger{
+class logger_Logger{
 	static info(msg){
 		if (!msg) {
 			return;
 		}
-		var tag = Logger.GLOBAL_TAG;
-		if (Logger.ENABLE_INFO) {
+		var tag = logger_Logger.GLOBAL_TAG;
+		if (!logger_Logger.ENABLE_INFO) {
 			return;
 		}
 		let str = `[${tag}]${msg}`;
@@ -39,8 +39,8 @@ class Logger{
 		if(!msg){
 			return;
 		}
-		var tag = Logger.GLOBAL_TAG;
-		if (Logger.ENABLE_ERROR){
+		var tag = logger_Logger.GLOBAL_TAG;
+		if (!logger_Logger.ENABLE_ERROR){
 			return;
 		}
 		let str = `[${tag}]${msg}`;
@@ -51,8 +51,8 @@ class Logger{
 		if(!msg){
 			return;
 		}
-		var tag = Logger.GLOBAL_TAG;
-		if(Logger.ENABLE_WARNING){
+		var tag = logger_Logger.GLOBAL_TAG;
+		if(!logger_Logger.ENABLE_WARNING){
 			return;
 		}
 		let str = `[${tag}]${msg}`;
@@ -63,8 +63,8 @@ class Logger{
 		if(!msg){
 			return;
 		}
-		var tag = Logger.GLOBAL_TAG;
-		if(Logger.ENABLE_DEBUG){
+		var tag = logger_Logger.GLOBAL_TAG;
+		if(!logger_Logger.ENABLE_DEBUG){
 			return;
 		}
 		let str = `%c[DEBUG][${tag}]${msg}`;
@@ -73,35 +73,13 @@ class Logger{
 
 }
 
-Logger.GLOBAL_TAG = "DynlantRD";
-Logger.ENABLE_ERROR = true;
-Logger.ENABLE_INFO = true;
-Logger.ENABLE_WARNING = true;
-Logger.ENABLE_DEBUG = true;
+logger_Logger.GLOBAL_TAG = "DynlantRD";
+logger_Logger.ENABLE_ERROR = true;
+logger_Logger.ENABLE_INFO = true;
+logger_Logger.ENABLE_WARNING = true;
+logger_Logger.ENABLE_DEBUG = true;
 
-/* harmony default export */ const logger = (Logger);
-
-;// CONCATENATED MODULE: ./src/utils/text2dom.js
-function ConversionEnter(originaltext){
-	let textin = originaltext;
-	let outtext = "";
-	if(textin.includes("\n") || textin.includes("\r") || textin.includes("\r\n")|| textin.includes("↵")){
-		outtext = textin.replace(/(\n|\r|\r\n|↵)/g, '<br/>');
-	}
-	if(outtext.includes("\s")){
-		outtext = textin.replace(/\s/g, '&nbsp;');
-	}
-	return outtext;
-}
-
-function text2dom(text){
-	let out = "";
-	let input = text;
-	out = ConversionEnter(input);
-	return out;
-}
-
-/* harmony default export */ const utils_text2dom = (text2dom);
+/* harmony default export */ const logger = (logger_Logger);
 
 ;// CONCATENATED MODULE: ./src/utils/processors.js
 
@@ -110,37 +88,172 @@ function text2dom(text){
 class Processors{
 	constructor(dom,debug){
 		if (!dom){
-			logger.error("DOM is not defined!");
+			Logger.error("[Processors]DOM is not defined!");
 			return;
 		}
 		this.element = dom;
 		this.enable_debug = debug;
 	}
 
-	insert(elements){
-		let input = elements;
-		let doms = utils_text2dom(input)
-		if(enable_debug){logger.debug(`[${Text2DOM}]Original content:"${input}",Convert content"${doms}"`);}
-		console.log(doms)
+	OutDebug(msg){
+		if(this.enable_debug){
+			Logger.debug(msg);
+		}
+	}
+
+	RenderElement(elements){
+		let element_obj = elements;
+		let element_dom = undefined;
+		let element_orig = this.element;
+		// 判断是不是Object
+		if(typeof element_obj && isNaN(element_obj.length)){
+
+			// 创建元素
+			if(element_obj.hasOwnProperty("element") && typeof element_obj.element == "string"){
+				element_dom = document.createElement(element_obj.element);
+				this.OutDebug(`[Processors]CreateElement ${element_obj.element}`);
+			}
+			else{
+				element_dom = document.createElement("p");
+				Logger.warn("[Processors]Not Define ElementName,Use Default Elements: p");
+			}
+
+			// 文本节点处理
+			if(element_obj.hasOwnProperty("text") && typeof element_obj.text == "string"){
+				let textarea = document.createTextNode(element_obj.text);
+				element_dom.appendChild(textarea);
+				this.OutDebug(`[Processors]Element Add TextNode: ${element_obj.text}`);
+			}
+
+			// 处理元素属性
+			if(element_obj.hasOwnProperty("attribute") && typeof element_obj.attribute == "object" && isNaN(element_obj.length)){
+				let orig_keys = Object.keys(element_obj.attribute);
+				Logger.info(orig_keys);
+				const rp = (data, obj) => {return data.map(item => obj[item] || item);}
+        let keys = rp(orig_keys,{eclass:'class'});
+				Logger.info(keys);
+				for(let index=0;index<orig_keys.length;index++){
+				  
+					if(element_obj.attribute.hasOwnProperty(orig_keys[index]) && !Array.isArray(element_obj.attribute[orig_keys[index]])){
+						element_dom.setAttribute(keys[index],element_obj.attribute[orig_keys[index]]);
+						this.OutDebug(`[Processors]Add Attribute(TEXT) ${keys[index]} Vaule ${element_obj.attribute[orig_keys[index]]}`);
+					}else{
+						let value = element_obj.attribute[orig_keys[index]];
+						let outvalue = value.join(' ');
+						element_dom.setAttribute(keys[index],outvalue);
+						this.OutDebug(`[Processors]Add Attribute(Array) ${keys[index]} Vaule ${outvalue}`);
+					}
+			  }
+			}
+
+			// 插入
+			element_orig.appendChild(element_dom);
+		}
 	}
 }
 
-/* harmony default export */ const utils_processors = (Processors);
+/* harmony default export */ const processors = ((/* unused pure expression or super */ null && (Processors)));
+
+;// CONCATENATED MODULE: ./src/DefaultConfig.js
+const defaultconfig = {
+	debug:false
+}
+
+function CreateDefaultConfig(){
+	return Object.assign({}, defaultconfig);
+}
+
+;// CONCATENATED MODULE: ./src/render/render.js
+
+
+
+class Render{
+	constructor(element,debug){
+		this.element = element;
+		this.plugins = {space:[],textnode:[],exec:[]};
+		this.edebug = debug;
+		this.plug_position = 0;
+
+		//Loading Plugins
+		for(let index=0;index<dynlantrd_root_plugin_storage.length;index++){
+			this.plugins.space[index] = dynlantrd_root_plugin_storage[index].name;
+			this.plugins.textnode[index] = dynlantrd_root_plugin_storage[index].node
+			this.plugins.exec[index] = dynlantrd_root_plugin_storage[index].exec
+		}
+	}
+
+	findPlugin(name){
+		let plug = name;
+		for(let index = 0;index<this.plugins.textnode.length;index++){
+			if(this.plugins.textnode[index] == plug){
+				this.plug_position = index;
+			}
+		}
+	}
+
+	RenderJSON(content){
+		let contents = content;
+		let { desc: { items : items }} = contents;
+		// Performance statistics
+		let timer_start = undefined;
+		// Render
+		if(contents.hasOwnProperty("protocol") && contents.protocol == 1){
+			if(Array.isArray(items)){
+				timer_start = performance.now();
+				for(let index = 0;index<items.length;index++){
+					if(items[index].node){
+						this.findPlugin(items[index].node);
+						this.plugins.exec[this.plug_position](items[index]);
+					}
+				}
+				let timer_end  = timer_start - performance.now();
+				return {rtimer: timer_end};
+			}
+			return;
+		}else{return;}
+	}
+}
+
+/* harmony default export */ const render = (Render);
 
 ;// CONCATENATED MODULE: ./src/dynlantrd.js
 
 
 
-function RenderJSON(){
-	let processors = new utils_processors(document.getElementById("jjj"));
-  console.log('test');
-	processors.insert("eee\n")
+
+
+window.dynlantrd_root_plugin_storage = [];
+
+function initDynlantRD(element,settings){
+	let elementer = element;
+	if(!element){logger.error("You must provide a dom element!");return;}
+	return new render(elementer,edebug)
+}
+
+function RegisterPlugin(plug_obj){
+	let plug_object = plug_obj;
+	if(!plug_object.hasOwnProperty("name") && !plug_object.hasOwnProperty("protocol") && !plug_object.hasOwnProperty("exec")){
+		logger.error("[Main---PluginMan]You must provide the object key:name/protocol/exec!");
+		return;}
+	if(!plug_object.protocol == 1){
+		logger.warn("[Main---PluginMan]Wrong protocol version,May affect operation");
+	}
+	if(!window.dynlantrd_root_plugin_storage){window.dynlantrd_root_plugin_storage = [];}
+	for(let index=0;index<dynlantrd_root_plugin_storage.length;index++){
+		if(dynlantrd_root_plugin_storage[index].name == plug_object.name){
+			logger.error(`[Main---PluginMan]plugin ${plug_object.name} has already been registered！(PASS)`)
+			return;
+		}
+	}
+	window.dynlantrd_root_plugin_storage.push(plug);
+	return;
 }
 
 let dynlantrd = {};
 
 // interfaces
-dynlantrd.RenderJSON = RenderJSON;
+dynlantrd.initDynlantRD = initDynlantRD;
+dynlantrd.RegisterPlugin = RegisterPlugin;
 
 // export dynlantrd
 /* harmony default export */ const src_dynlantrd = (dynlantrd);
@@ -153,7 +266,7 @@ dynlantrd.RenderJSON = RenderJSON;
 
 // entry file
 
-module.exports = __webpack_require__(678)["default"];
+module.exports = __webpack_require__(385)["default"];
 
 /***/ })
 
