@@ -2,24 +2,16 @@ import Logger from "../utils/logger";
 import Processors from "../utils/processors";
 
 class Render{
-	constructor(element,debug){
+	constructor(element,setting){
 		this.element = element;
-		this.plugins = {space:[],textnode:[],exec:[]};
-		this.edebug = debug;
+		this.edebug = setting.debug;
+		this.settings = setting;
 		this.plug_position = 0;
-
-		//Loading Plugins
-		for(let index=0;index<dynlantrd_root_plugin_storage.length;index++){
-			this.plugins.space[index] = dynlantrd_root_plugin_storage[index].name;
-			this.plugins.textnode[index] = dynlantrd_root_plugin_storage[index].node
-			this.plugins.exec[index] = dynlantrd_root_plugin_storage[index].exec
-		}
 	}
 
-	findPlugin(name){
-		let plug = name;
-		for(let index = 0;index<this.plugins.textnode.length;index++){
-			if(this.plugins.textnode[index] == plug){
+	findPlugin(node,type){
+		for(let index = 0;index<dynlantrd_root_plugin_storage.length;index++){
+			if(dynlantrd_root_plugin_storage[index].node == node && dynlantrd_root_plugin_storage[index].type == type){
 				this.plug_position = index;
 			}
 		}
@@ -36,11 +28,17 @@ class Render{
 				timer_start = performance.now();
 				for(let index = 0;index<items.length;index++){
 					if(items[index].node){
-						this.findPlugin(items[index].node);
-						this.plugins.exec[this.plug_position](items[index]);
+						this.findPlugin(items[index].node,"render");
+						let ele_dom= dynlantrd_root_plugin_storage[this.plug_position].exec(items[index],new Processors(this.element,this.settings));
+						if(!ele_dom == "rendered"){
+							this.findPlugin(items[index].node,"ornament")
+							ele_dom = dynlantrd_root_plugin_storage[this.plug_position].exec(ele_dom,new Processors(this.element,this.settings));
+							let prog = new Processors(this.element,this.settings);
+							prog.RenderElement(ele_dom);
+						}
 					}
 				}
-				let timer_end  = timer_start - performance.now();
+				let timer_end  =  performance.now() - timer_start;
 				return {rtimer: timer_end};
 			}
 			return;

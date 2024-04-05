@@ -8,7 +8,7 @@ window.dynlantrd_root_plugin_storage = [];
 function initDynlantRD(element,settings){
 	let elementer = element;
 	if(!element){Logger.error("You must provide a dom element!");return;}
-	return new Render(elementer,edebug)
+	return new Render(elementer,settings)
 }
 
 function RegisterPlugin(plug_obj){
@@ -26,7 +26,7 @@ function RegisterPlugin(plug_obj){
 			return;
 		}
 	}
-	window.dynlantrd_root_plugin_storage.push(plug);
+	window.dynlantrd_root_plugin_storage.push(plug_object);
 	return;
 }
 

@@ -44,7 +44,7 @@ class Logger{
 			return;
 		}
 		let str = `%c[DEBUG][${tag}]${msg}`;
-		console.info(str,"color:yellow");
+		console.info(str,"color:#D19800");
 	}
 
 }

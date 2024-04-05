@@ -22,13 +22,13 @@ __webpack_require__.d(__webpack_exports__, {
 });
 
 ;// CONCATENATED MODULE: ./src/utils/logger.js
-class logger_Logger{
+class Logger{
 	static info(msg){
 		if (!msg) {
 			return;
 		}
-		var tag = logger_Logger.GLOBAL_TAG;
-		if (!logger_Logger.ENABLE_INFO) {
+		var tag = Logger.GLOBAL_TAG;
+		if (!Logger.ENABLE_INFO) {
 			return;
 		}
 		let str = `[${tag}]${msg}`;
@@ -39,8 +39,8 @@ class logger_Logger{
 		if(!msg){
 			return;
 		}
-		var tag = logger_Logger.GLOBAL_TAG;
-		if (!logger_Logger.ENABLE_ERROR){
+		var tag = Logger.GLOBAL_TAG;
+		if (!Logger.ENABLE_ERROR){
 			return;
 		}
 		let str = `[${tag}]${msg}`;
@@ -51,8 +51,8 @@ class logger_Logger{
 		if(!msg){
 			return;
 		}
-		var tag = logger_Logger.GLOBAL_TAG;
-		if(!logger_Logger.ENABLE_WARNING){
+		var tag = Logger.GLOBAL_TAG;
+		if(!Logger.ENABLE_WARNING){
 			return;
 		}
 		let str = `[${tag}]${msg}`;
@@ -63,41 +63,43 @@ class logger_Logger{
 		if(!msg){
 			return;
 		}
-		var tag = logger_Logger.GLOBAL_TAG;
-		if(!logger_Logger.ENABLE_DEBUG){
+		var tag = Logger.GLOBAL_TAG;
+		if(!Logger.ENABLE_DEBUG){
 			return;
 		}
 		let str = `%c[DEBUG][${tag}]${msg}`;
-		console.info(str,"color:yellow");
+		console.info(str,"color:#D19800");
 	}
 
 }
 
-logger_Logger.GLOBAL_TAG = "DynlantRD";
-logger_Logger.ENABLE_ERROR = true;
-logger_Logger.ENABLE_INFO = true;
-logger_Logger.ENABLE_WARNING = true;
-logger_Logger.ENABLE_DEBUG = true;
+Logger.GLOBAL_TAG = "DynlantRD";
+Logger.ENABLE_ERROR = true;
+Logger.ENABLE_INFO = true;
+Logger.ENABLE_WARNING = true;
+Logger.ENABLE_DEBUG = true;
 
-/* harmony default export */ const logger = (logger_Logger);
+/* harmony default export */ const logger = (Logger);
 
 ;// CONCATENATED MODULE: ./src/utils/processors.js
 
 
 
 class Processors{
-	constructor(dom,debug){
+	constructor(dom,setting){
 		if (!dom){
-			Logger.error("[Processors]DOM is not defined!");
+			logger.error("[Processors]DOM is not defined!");
 			return;
 		}
 		this.element = dom;
-		this.enable_debug = debug;
+		this.settinge = {safely:{xssfilter:false}}
+		this.settings = {...this.settinge,...setting};
+		this.element_job = undefined;
 	}
 
 	OutDebug(msg){
-		if(this.enable_debug){
-			Logger.debug(msg);
+		if(this.settings.debug){
+			logger.debug(msg);
 		}
 	}
 
@@ -115,12 +117,12 @@ class Processors{
 			}
 			else{
 				element_dom = document.createElement("p");
-				Logger.warn("[Processors]Not Define ElementName,Use Default Elements: p");
+				logger.warn("[Processors]Not Define ElementName,Use Default Elements: p");
 			}
 
 			// 文本节点处理
 			if(element_obj.hasOwnProperty("text") && typeof element_obj.text == "string"){
-				let textarea = document.createTextNode(element_obj.text);
+				let textarea = document.createTextNode(this.XSSfilter(element_obj.text,this.settings.safely.xssfilter));
 				element_dom.appendChild(textarea);
 				this.OutDebug(`[Processors]Element Add TextNode: ${element_obj.text}`);
 			}
@@ -128,10 +130,10 @@ class Processors{
 			// 处理元素属性
 			if(element_obj.hasOwnProperty("attribute") && typeof element_obj.attribute == "object" && isNaN(element_obj.length)){
 				let orig_keys = Object.keys(element_obj.attribute);
-				Logger.info(orig_keys);
+				logger.info(orig_keys);
 				const rp = (data, obj) => {return data.map(item => obj[item] || item);}
-        let keys = rp(orig_keys,{eclass:'class'});
-				Logger.info(keys);
+				let keys = rp(orig_keys,{eclass:'class'});
+				logger.info(keys);
 				for(let index=0;index<orig_keys.length;index++){
 				  
 					if(element_obj.attribute.hasOwnProperty(orig_keys[index]) && !Array.isArray(element_obj.attribute[orig_keys[index]])){
@@ -149,10 +151,53 @@ class Processors{
 			// 插入
 			element_orig.appendChild(element_dom);
 		}
+		return "rendered";
 	}
+
+	createElement(){
+		this.element_job = {element:undefined};
+	}
+
+	setElement(element_k){
+		this.element_job.element = element_k;
+	}
+
+	setText(text){
+		this.element_job.text = text;
+	}
+
+	setAttribute(attr_key,attr_obj){
+		this.element_job.attribute[attr_key] = attr_obj;
+	}
+
+	pushAttribute(push_key,push_obj){
+		this.element_job.attribute[push_key].push(push_obj);
+	}
+
+	deleteAttribute(del_key,del_obj){
+		this.element_job.attribute[del_key] = this.element_job.attribute[del_key].filter(function(item){return item !== del_obj});
+	}
+
+	exportElement(){
+		return this.element_job;
+	}
+
+	XSSfilter(str,bol){
+	if(!bol) return str;
+	var s = "";
+	if(str.length == 0) return "";
+	s = str.replace(/&/g,"&amp;");
+	s = s.replace(/</g,"&lt;");
+	s = s.replace(/>/g,"&gt;");
+	s = s.replace(/ /g,"&nbsp;");
+	s = s.replace(/\'/g,"&#39;");
+	s = s.replace(/\"/g,"&quot;");
+	return s;
+	}
+
 }
 
-/* harmony default export */ const processors = ((/* unused pure expression or super */ null && (Processors)));
+/* harmony default export */ const processors = (Processors);
 
 ;// CONCATENATED MODULE: ./src/DefaultConfig.js
 const defaultconfig = {
@@ -168,24 +213,16 @@ function CreateDefaultConfig(){
 
 
 class Render{
-	constructor(element,debug){
+	constructor(element,setting){
 		this.element = element;
-		this.plugins = {space:[],textnode:[],exec:[]};
-		this.edebug = debug;
+		this.edebug = setting.debug;
+		this.settings = setting;
 		this.plug_position = 0;
-
-		//Loading Plugins
-		for(let index=0;index<dynlantrd_root_plugin_storage.length;index++){
-			this.plugins.space[index] = dynlantrd_root_plugin_storage[index].name;
-			this.plugins.textnode[index] = dynlantrd_root_plugin_storage[index].node
-			this.plugins.exec[index] = dynlantrd_root_plugin_storage[index].exec
-		}
 	}
 
-	findPlugin(name){
-		let plug = name;
-		for(let index = 0;index<this.plugins.textnode.length;index++){
-			if(this.plugins.textnode[index] == plug){
+	findPlugin(node,type){
+		for(let index = 0;index<dynlantrd_root_plugin_storage.length;index++){
+			if(dynlantrd_root_plugin_storage[index].node == node && dynlantrd_root_plugin_storage[index].type == type){
 				this.plug_position = index;
 			}
 		}
@@ -202,11 +239,17 @@ class Render{
 				timer_start = performance.now();
 				for(let index = 0;index<items.length;index++){
 					if(items[index].node){
-						this.findPlugin(items[index].node);
-						this.plugins.exec[this.plug_position](items[index]);
+						this.findPlugin(items[index].node,"render");
+						let ele_dom= dynlantrd_root_plugin_storage[this.plug_position].exec(items[index],new processors(this.element,this.settings));
+						if(!ele_dom == "rendered"){
+							this.findPlugin(items[index].node,"ornament")
+							ele_dom = dynlantrd_root_plugin_storage[this.plug_position].exec(ele_dom,new processors(this.element,this.settings));
+							let prog = new processors(this.element,this.settings);
+							prog.RenderElement(ele_dom);
+						}
 					}
 				}
-				let timer_end  = timer_start - performance.now();
+				let timer_end  =  performance.now() - timer_start;
 				return {rtimer: timer_end};
 			}
 			return;
@@ -227,7 +270,7 @@ window.dynlantrd_root_plugin_storage = [];
 function initDynlantRD(element,settings){
 	let elementer = element;
 	if(!element){logger.error("You must provide a dom element!");return;}
-	return new render(elementer,edebug)
+	return new render(elementer,settings)
 }
 
 function RegisterPlugin(plug_obj){
@@ -245,7 +288,7 @@ function RegisterPlugin(plug_obj){
 			return;
 		}
 	}
-	window.dynlantrd_root_plugin_storage.push(plug);
+	window.dynlantrd_root_plugin_storage.push(plug_object);
 	return;
 }
 

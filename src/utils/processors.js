@@ -2,17 +2,19 @@ import Logger from "./logger"
 import text2dom from "./text2dom"
 
 class Processors{
-	constructor(dom,debug){
+	constructor(dom,setting){
 		if (!dom){
 			Logger.error("[Processors]DOM is not defined!");
 			return;
 		}
 		this.element = dom;
-		this.enable_debug = debug;
+		this.settinge = {safely:{xssfilter:false}}
+		this.settings = {...this.settinge,...setting};
+		this.element_job = undefined;
 	}
 
 	OutDebug(msg){
-		if(this.enable_debug){
+		if(this.settings.debug){
 			Logger.debug(msg);
 		}
 	}
@@ -36,7 +38,7 @@ class Processors{
 
 			// 文本节点处理
 			if(element_obj.hasOwnProperty("text") && typeof element_obj.text == "string"){
-				let textarea = document.createTextNode(element_obj.text);
+				let textarea = document.createTextNode(this.XSSfilter(element_obj.text,this.settings.safely.xssfilter));
 				element_dom.appendChild(textarea);
 				this.OutDebug(`[Processors]Element Add TextNode: ${element_obj.text}`);
 			}
@@ -46,7 +48,7 @@ class Processors{
 				let orig_keys = Object.keys(element_obj.attribute);
 				Logger.info(orig_keys);
 				const rp = (data, obj) => {return data.map(item => obj[item] || item);}
-        let keys = rp(orig_keys,{eclass:'class'});
+				let keys = rp(orig_keys,{eclass:'class'});
 				Logger.info(keys);
 				for(let index=0;index<orig_keys.length;index++){
 				  
@@ -65,7 +67,50 @@ class Processors{
 			// 插入
 			element_orig.appendChild(element_dom);
 		}
+		return "rendered";
 	}
+
+	createElement(){
+		this.element_job = {element:undefined};
+	}
+
+	setElement(element_k){
+		this.element_job.element = element_k;
+	}
+
+	setText(text){
+		this.element_job.text = text;
+	}
+
+	setAttribute(attr_key,attr_obj){
+		this.element_job.attribute[attr_key] = attr_obj;
+	}
+
+	pushAttribute(push_key,push_obj){
+		this.element_job.attribute[push_key].push(push_obj);
+	}
+
+	deleteAttribute(del_key,del_obj){
+		this.element_job.attribute[del_key] = this.element_job.attribute[del_key].filter(function(item){return item !== del_obj});
+	}
+
+	exportElement(){
+		return this.element_job;
+	}
+
+	XSSfilter(str,bol){
+	if(!bol) return str;
+	var s = "";
+	if(str.length == 0) return "";
+	s = str.replace(/&/g,"&amp;");
+	s = s.replace(/</g,"&lt;");
+	s = s.replace(/>/g,"&gt;");
+	s = s.replace(/ /g,"&nbsp;");
+	s = s.replace(/\'/g,"&#39;");
+	s = s.replace(/\"/g,"&quot;");
+	return s;
+	}
+
 }
 
 export default Processors;
