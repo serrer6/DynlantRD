@@ -31,16 +31,16 @@ class Render{
 				for(let index = 0;index<items.length;index++){
 					if(items[index].node){
 						this.findPlugin(items[index].node,"render");
-						if(!this.plug_position == "un"){
+						if(typeof this.plug_position === 'number'){
 							let ele_dom= dynlantrd_root_plugin_storage[this.plug_position].exec(items[index],new Processors(this.element,this.settings));
 						}
-						if(!ele_dom == "rendered"){
+						if(Object.prototype.toString.call(ele_dom) === '[object Object]'){
+						let prog = new Processors(this.element,this.settings);
 							this.findPlugin(items[index].node,"ornament");
-							if(!this.plug_position == "un"){
+							if(typeof this.plug_position === 'number'){
 								ele_dom = dynlantrd_root_plugin_storage[this.plug_position].exec(ele_dom,new Processors(this.element,this.settings));
-								let prog = new Processors(this.element,this.settings);
-								prog.RenderElement(ele_dom);
 							}
+						prog.RenderElement(ele_dom);
 						}
 					}
 				}

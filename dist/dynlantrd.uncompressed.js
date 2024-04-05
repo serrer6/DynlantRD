@@ -224,8 +224,10 @@ class Render{
 		for(let index = 0;index<dynlantrd_root_plugin_storage.length;index++){
 			if(dynlantrd_root_plugin_storage[index].node == node && dynlantrd_root_plugin_storage[index].type == type){
 				this.plug_position = index;
+				return;
 			}
 		}
+		this.plug_position = "un";
 	}
 
 	RenderJSON(content){
@@ -240,12 +242,16 @@ class Render{
 				for(let index = 0;index<items.length;index++){
 					if(items[index].node){
 						this.findPlugin(items[index].node,"render");
-						let ele_dom= dynlantrd_root_plugin_storage[this.plug_position].exec(items[index],new processors(this.element,this.settings));
+						if(!this.plug_position == "un"){
+							let ele_dom= dynlantrd_root_plugin_storage[this.plug_position].exec(items[index],new processors(this.element,this.settings));
+						}
 						if(!ele_dom == "rendered"){
-							this.findPlugin(items[index].node,"ornament")
-							ele_dom = dynlantrd_root_plugin_storage[this.plug_position].exec(ele_dom,new processors(this.element,this.settings));
-							let prog = new processors(this.element,this.settings);
-							prog.RenderElement(ele_dom);
+							this.findPlugin(items[index].node,"ornament");
+							if(!this.plug_position == "un"){
+								ele_dom = dynlantrd_root_plugin_storage[this.plug_position].exec(ele_dom,new processors(this.element,this.settings));
+								let prog = new processors(this.element,this.settings);
+								prog.RenderElement(ele_dom);
+							}
 						}
 					}
 				}

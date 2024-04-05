@@ -46,10 +46,8 @@ class Processors{
 			// 处理元素属性
 			if(element_obj.hasOwnProperty("attribute") && typeof element_obj.attribute == "object" && isNaN(element_obj.length)){
 				let orig_keys = Object.keys(element_obj.attribute);
-				Logger.info(orig_keys);
 				const rp = (data, obj) => {return data.map(item => obj[item] || item);}
 				let keys = rp(orig_keys,{eclass:'class'});
-				Logger.info(keys);
 				for(let index=0;index<orig_keys.length;index++){
 				  
 					if(element_obj.attribute.hasOwnProperty(orig_keys[index]) && !Array.isArray(element_obj.attribute[orig_keys[index]])){
