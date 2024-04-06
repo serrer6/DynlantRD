@@ -30,9 +30,10 @@ class Render{
 				timer_start = performance.now();
 				for(let index = 0;index<items.length;index++){
 					if(items[index].node){
+						let ele_dom = undefined;
 						this.findPlugin(items[index].node,"render");
 						if(typeof this.plug_position === 'number'){
-							let ele_dom= dynlantrd_root_plugin_storage[this.plug_position].exec(items[index],new Processors(this.element,this.settings));
+							ele_dom= dynlantrd_root_plugin_storage[this.plug_position].exec(items[index],new Processors(this.element,this.settings));
 						}
 						if(Object.prototype.toString.call(ele_dom) === '[object Object]'){
 						let prog = new Processors(this.element,this.settings);

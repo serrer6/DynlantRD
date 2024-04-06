@@ -130,10 +130,8 @@ class Processors{
 			// 处理元素属性
 			if(element_obj.hasOwnProperty("attribute") && typeof element_obj.attribute == "object" && isNaN(element_obj.length)){
 				let orig_keys = Object.keys(element_obj.attribute);
-				logger.info(orig_keys);
 				const rp = (data, obj) => {return data.map(item => obj[item] || item);}
 				let keys = rp(orig_keys,{eclass:'class'});
-				logger.info(keys);
 				for(let index=0;index<orig_keys.length;index++){
 				  
 					if(element_obj.attribute.hasOwnProperty(orig_keys[index]) && !Array.isArray(element_obj.attribute[orig_keys[index]])){
@@ -241,17 +239,18 @@ class Render{
 				timer_start = performance.now();
 				for(let index = 0;index<items.length;index++){
 					if(items[index].node){
+						let ele_dom = undefined;
 						this.findPlugin(items[index].node,"render");
-						if(!this.plug_position == "un"){
-							let ele_dom= dynlantrd_root_plugin_storage[this.plug_position].exec(items[index],new processors(this.element,this.settings));
+						if(typeof this.plug_position === 'number'){
+							ele_dom= dynlantrd_root_plugin_storage[this.plug_position].exec(items[index],new processors(this.element,this.settings));
 						}
-						if(!ele_dom == "rendered"){
+						if(Object.prototype.toString.call(ele_dom) === '[object Object]'){
+						let prog = new processors(this.element,this.settings);
 							this.findPlugin(items[index].node,"ornament");
-							if(!this.plug_position == "un"){
+							if(typeof this.plug_position === 'number'){
 								ele_dom = dynlantrd_root_plugin_storage[this.plug_position].exec(ele_dom,new processors(this.element,this.settings));
-								let prog = new processors(this.element,this.settings);
-								prog.RenderElement(ele_dom);
 							}
+						prog.RenderElement(ele_dom);
 						}
 					}
 				}
