@@ -14,7 +14,7 @@
 - 第一种写法(不推荐)
 ```javascript
 const plugin = {
-  name:'sss',
+  name:'a_plugin',
   protocol:1,
   type:'render',
   node:'RICH_TEXT_NODE_TEXT',
@@ -28,7 +28,7 @@ const plugin = {
           style:"display: inline;margin:0;"
         }
     };
-    return obj;
+    processor.RenderElement(processors_object);
   }};
 
 dynlantrd.RegisterPlugin(plugin);
@@ -36,12 +36,21 @@ dynlantrd.RegisterPlugin(plugin);
 - 第二种写法(推荐)
 ```javascript
 const plugin = {
-  name:'sss',
+  name:'a_plugin',
   protocol:1,
   type:'render',
   node:'RICH_TEXT_NODE_TEXT',
   exec:function(param,processor){
-    
+    let text = param.orig_text;
+    let processors_object={
+      element:'p',
+      text:text,
+      attribute:
+        {
+          style:"display: inline;margin:0;"
+        }
+    };
+    // 这可以使得让第三方作者为你的插件制作装饰器
     return obj;
   }};
 

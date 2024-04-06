@@ -1,4 +1,5 @@
 # DynlantRD项目文档(V1.0.0)
+- [API文档](https://github.com/serrer6/DynlantRD/tree/master/docs/dev/plug_api.md)
 
 ## 快速开始
 - [使用DynlantRD](https://github.com/serrer6/DynlantRD/tree/master/docs/use/README.md)

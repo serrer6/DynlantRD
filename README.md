@@ -13,7 +13,7 @@
   <p align="center">
     适用于网站帖子的富文本渲染器
     <br />
-    <a href="https://github.com/serrer6/DynlantRD"><strong>浏览文档[暂无] »</strong></a>
+    <a href="https://github.com/serrer6/DynlantRD/tree/master/docs/README.md"><strong>浏览文档 »</strong></a>
     <br />
     <br />
     <a href="https://github.com/serrer6/DynlantRD">查看 Demo[无]</a>
@@ -30,8 +30,8 @@
 ---------
 
 ## :sparkles:特点
-- :rocket:轻量级
-- :zap:足够快
+- :rocket:体积小，不过10KB的身躯
+- :zap:足够快，上百条富文本。仅需不到50ms
 
 ## 快速开始
 这是一份在本地构建项目的指导的例子。
@@ -54,7 +54,7 @@ npm run build
 
 asset dynlantrd.uncompressed.js x KiB [compared for emit] (name: dynlantrd.uncompressed)
 asset dynlantrd.min.js x KiB [compared for emit] [minimized] (name: dynlantrd.min)
-orphan modules 5.15 KiB [orphan] 5 modules
+orphan modules x.xx KiB [orphan] 5 modules
 runtime modules xxx bytes x modules
 cacheable modules *.** KiB
   ./src/index.js xx bytes [built] [code generated]
@@ -68,7 +68,10 @@ webpack 5.90.3 compiled successfully in xxxx ms
 - [x] 添加更新日志
 - [x] 完成基本建设
 - [ ] 构建第一个发行版本
-- [ ] 制作更好的插件API
+- [x] 制作更好的插件API
+  - [x] 支持装载插件
+  - [ ] 支持卸载插件
+  - [ ] 添加插件初始化
 
 ## 使用方式
 - HTML引入
@@ -87,7 +90,7 @@ webpack 5.90.3 compiled successfully in xxxx ms
 ## 📜版权信息
 本项目签署了GPL v2授权协议，详情请到项目根目录下的LICENCE文件了解
 
-## CHANGLOG (只展示最近近十条，详细请看CHANGLOG.md)
+## CHANGLOG (只展示最近十条，详细请看CHANGLOG.md)
 0.0.2 基础建设，插件系统实现了
 - 添加了 Render.js
 - 修改了 processors.js Obj2DOM实现
