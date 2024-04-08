@@ -19,15 +19,7 @@ const plugin = {
   type:'render',
   node:'RICH_TEXT_NODE_TEXT',
   exec:function(param,processor){
-    let text = param.orig_text;
-    let processors_object={
-      element:'p',
-      text:text,
-      attribute:
-        {
-          style:"display: inline;margin:0;"
-        }
-    };
+    // Somethings
     processor.RenderElement(processors_object);
   }};
 
@@ -41,15 +33,7 @@ const plugin = {
   type:'render',
   node:'RICH_TEXT_NODE_TEXT',
   exec:function(param,processor){
-    let text = param.orig_text;
-    let processors_object={
-      element:'p',
-      text:text,
-      attribute:
-        {
-          style:"display: inline;margin:0;"
-        }
-    };
+    // Somethings
     // 这可以使得让第三方作者为你的插件制作装饰器
     return obj;
   }};
