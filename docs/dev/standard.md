@@ -33,7 +33,7 @@ const plugin = {
   type:'render',
   node:'RICH_TEXT_NODE_TEXT',
   exec:function(param,processor){
-    // Somethings
+    // Something
     // 这可以使得让第三方作者为你的插件制作装饰器
     return obj;
   }};
