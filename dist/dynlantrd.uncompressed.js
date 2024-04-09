@@ -81,6 +81,15 @@ Logger.ENABLE_DEBUG = true;
 
 /* harmony default export */ const logger = (Logger);
 
+;// CONCATENATED MODULE: ./src/DefaultConfig.js
+const defaultconfig = {
+	debug:false
+}
+
+function CreateDefaultConfig(){
+	return Object.assign({}, defaultconfig);
+}
+
 ;// CONCATENATED MODULE: ./src/utils/processors.js
 
 
@@ -197,15 +206,6 @@ class Processors{
 
 /* harmony default export */ const processors = (Processors);
 
-;// CONCATENATED MODULE: ./src/DefaultConfig.js
-const defaultconfig = {
-	debug:false
-}
-
-function CreateDefaultConfig(){
-	return Object.assign({}, defaultconfig);
-}
-
 ;// CONCATENATED MODULE: ./src/render/render.js
 
 
@@ -269,7 +269,6 @@ class Render{
 
 
 
-
 window.dynlantrd_root_plugin_storage = [];
 
 function initDynlantRD(element,settings){
@@ -297,11 +296,19 @@ function RegisterPlugin(plug_obj){
 	return;
 }
 
+function UnRegisterPlugin(plug_name){
+	window.dynlantrd_root_plugin_storage.forEach(function(item, index, arr) {
+		if(item.name == plug_name){
+			arr.splice(index, 1);
+		}});
+}
+
 let dynlantrd = {};
 
 // interfaces
 dynlantrd.initDynlantRD = initDynlantRD;
 dynlantrd.RegisterPlugin = RegisterPlugin;
+dynlantrd.UnRegisterPlugin = UnRegisterPlugin;
 
 // export dynlantrd
 /* harmony default export */ const src_dynlantrd = (dynlantrd);

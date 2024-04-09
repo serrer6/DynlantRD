@@ -1,4 +1,3 @@
-import Processors from "./utils/processors";
 import Logger from "./utils/logger";
 import CreateDefaultConfig from "./DefaultConfig"
 import Render from "./render/render";
@@ -30,11 +29,19 @@ function RegisterPlugin(plug_obj){
 	return;
 }
 
+function UnRegisterPlugin(plug_name){
+	window.dynlantrd_root_plugin_storage.forEach(function(item, index, arr) {
+		if(item.name == plug_name){
+			arr.splice(index, 1);
+		}});
+}
+
 let dynlantrd = {};
 
 // interfaces
 dynlantrd.initDynlantRD = initDynlantRD;
 dynlantrd.RegisterPlugin = RegisterPlugin;
+dynlantrd.UnRegisterPlugin = UnRegisterPlugin;
 
 // export dynlantrd
 export default dynlantrd;
