@@ -1,8 +1,9 @@
 const LOGLEVEL = Object.freeze({
+	DEBUG: -1,
 	INFO: 0,
 	WARNING: 1,
 	ERROR: 2,
-	DEBUG: -1
+	OFF: 3
 })
 class Logger{
 	constructor(loglevel = LOGLEVEL.INFO){
@@ -16,7 +17,7 @@ class Logger{
 	}
 
 	error(msg){
-		if (msg && tthis.LOGLEVEL>=LOGLEVEL.ERROR) {
+		if (msg && this.LOGLEVEL>=LOGLEVEL.ERROR) {
 			console.error(`[${this.GLOBAL_TAG}]${msg}`);
 		}
 	}
