@@ -6,9 +6,9 @@ const LOGLEVEL = Object.freeze({
 })
 class Logger{
 	constructor(loglevel = LOGLEVEL.INFO){
+		this.GLOBAL_TAG = "DynlantRD"
 		this.LOGLEVEL = loglevel
 	}
-	GLOBAL_TAG = "DynlantRD"
 	info(msg){
 		if (msg && this.LOGLEVEL>=LOGLEVEL.INFO) {
 			console.info(`[${this.GLOBAL_TAG}]${msg}`);
