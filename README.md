@@ -98,4 +98,4 @@ webpack 5.90.3 compiled successfully in xxxx ms
 - 全新的readme
 
 0.0.1 项目创建
-- 添加了Looger.js
+- 添加了Logger.js
