@@ -1,58 +1,37 @@
+const LOGLEVEL = Object.freeze({
+	INFO: 0,
+	WARNING: 1,
+	ERROR: 2,
+	DEBUG: -1
+})
 class Logger{
-	static info(msg){
-		if (!msg) {
-			return;
+	constructor(loglevel = LOGLEVEL.INFO){
+		this.LOGLEVEL = loglevel
+	}
+	GLOBAL_TAG = "DynlantRD"
+	info(msg){
+		if (msg && this.LOGLEVEL>=LOGLEVEL.INFO) {
+			console.info(`[${this.GLOBAL_TAG}]${msg}`);
 		}
-		var tag = Logger.GLOBAL_TAG;
-		if (!Logger.ENABLE_INFO) {
-			return;
-		}
-		let str = `[${tag}]${msg}`;
-		console.info(str);
 	}
 
-	static error(msg){
-		if(!msg){
-			return;
+	error(msg){
+		if (msg && tthis.LOGLEVEL>=LOGLEVEL.ERROR) {
+			console.error(`[${this.GLOBAL_TAG}]${msg}`);
 		}
-		var tag = Logger.GLOBAL_TAG;
-		if (!Logger.ENABLE_ERROR){
-			return;
-		}
-		let str = `[${tag}]${msg}`;
-		console.error(str);
 	}
 
-	static warning(msg){
-		if(!msg){
-			return;
+	warning(msg){
+		if (msg && this.LOGLEVEL>=LOGLEVEL.WARNING) {
+			console.warn(`[${this.GLOBAL_TAG}]${msg}`);
 		}
-		var tag = Logger.GLOBAL_TAG;
-		if(!Logger.ENABLE_WARNING){
-			return;
-		}
-		let str = `[${tag}]${msg}`;
-		console.warn(str);
 	}
 
-	static debug(msg){
-		if(!msg){
-			return;
+	debug(msg){
+		if (msg && this.LOGLEVEL>=LOGLEVEL.DEBUG) {
+			console.debug(`[${this.GLOBAL_TAG}]${msg}`);
 		}
-		var tag = Logger.GLOBAL_TAG;
-		if(!Logger.ENABLE_DEBUG){
-			return;
-		}
-		let str = `%c[DEBUG][${tag}]${msg}`;
-		console.info(str,"color:#D19800");
 	}
-
 }
-
-Logger.GLOBAL_TAG = "DynlantRD";
-Logger.ENABLE_ERROR = true;
-Logger.ENABLE_INFO = true;
-Logger.ENABLE_WARNING = true;
-Logger.ENABLE_DEBUG = true;
 
 export default Logger;
