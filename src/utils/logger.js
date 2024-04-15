@@ -4,7 +4,7 @@ const LOGLEVEL = Object.freeze({
 	WARNING: 1,
 	ERROR: 2
 })
-class Logger{
+class LoggerHelper{
 	constructor(loglevel = LOGLEVEL.INFO){
 		this.GLOBAL_TAG = "DynlantRD"
 		this.LOGLEVEL = loglevel
@@ -34,4 +34,4 @@ class Logger{
 	}
 }
 
-export default Logger;
+export default LoggerHelper;
