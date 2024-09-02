@@ -82,6 +82,7 @@ webpack 5.90.3 compiled successfully in xxxx ms
 
 ## 贡献者
 - Serrer6{别名：酸酪QwQ} [发起者～主要贡献者]
+- plox3770 [代码贡献者]
 
 ## 🎈鸣谢
 - 本项目部分借鉴bilibili/flv.js
