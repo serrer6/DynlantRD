@@ -4,7 +4,7 @@
 ![Webpack](https://img.shields.io/badge/WEBPACK-8DD6F9?style=for-the-badge&logo=webpack&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![MiaoDB](https://img.shields.io/badge/MiaoDB--Project_OpenSource-2B2F64?style=for-the-badge&)
+![BlanklyDB](https://img.shields.io/badge/BlanklyDB--Project_OpenSource-2B2F64?style=for-the-badge&)
 
 <div align="center">
 
@@ -82,6 +82,7 @@ webpack 5.90.3 compiled successfully in xxxx ms
 
 ## 贡献者
 - Serrer6{别名：酸酪QwQ} [发起者～主要贡献者]
+- plox3770 [代码贡献者]
 
 ## 🎈鸣谢
 - 本项目部分借鉴bilibili/flv.js
